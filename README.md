@@ -14,15 +14,15 @@ requirements ImageMagick(use mogrify command)
 
 Add this line to your application's Gemfile:
 
-    gem 'simple_magick'
+    gem 'simple_magick', github: 'sugamasao/simple_magick'
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+## Supported versions
 
-    $ gem install simple_magick
+ - Ruby 2.0.0, 2.1.0
 
 ## Usage
 
