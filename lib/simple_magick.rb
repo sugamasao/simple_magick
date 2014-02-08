@@ -28,7 +28,7 @@ module SimpleMagick
       @command     = ['mogrify']
     end
 
-    # @param [String] size reszie size
+    # @param [String] size resize size
     def resize(size)
       @command << "-resize #{Shellwords.escape(size)}"
     end
@@ -46,7 +46,7 @@ module SimpleMagick
     # run ImageMagick.
     # @param [String] destination_path output image path
     # @return [Void]
-    # @raise Simplemagick::ConvertError
+    # @raise [SimpleMagick::ConvertError] mogrify command fail.
     def convert!(destination_path)
       file_copy(destination_path)
       command = create_command(@command, destination_path)
@@ -68,7 +68,13 @@ module SimpleMagick
 
     # copy source_path to destination_path
     # @param [String] destination_path
+    # @return [Void]
+    # @raise [SimpleMagick::ConvertError] @source_path not found.
     def file_copy(destination_path)
+      unless File.file? @source_path
+        raise ConvertError.new("Not Found intput file. input file => [#{@source_path}]")
+      end
+
       dest_dir = File.dirname(destination_path)
       FileUtils.mkdir_p(dest_dir)
       puts "[INFO] cp #{@source_path} #{destination_path}" if @verbose
@@ -76,8 +82,9 @@ module SimpleMagick
     end
 
     # create exec command line
-    # @param [Array] command mogrigy command
+    # @param [Array] command mogrify command
     # @param [String] destination_path create image path
+    # @return [String] command String.
     def create_command(command, destination_path)
       command << Shellwords.escape(destination_path)
       command.join(' ')
