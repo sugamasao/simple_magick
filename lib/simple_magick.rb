@@ -30,17 +30,24 @@ module SimpleMagick
 
     # @param [String] size resize size
     def resize(size)
-      @command << "-resize #{Shellwords.escape(size)}"
+      @command << "-resize #{command_escape(size)}"
     end
 
     # @param [String] num image quality
     def quality(num)
-      @command << "-quality #{Shellwords.escape(num)}"
+      @command << "-quality #{command_escape(num)}"
     end
 
     # @param [String] string define string.
     def define(string)
-      @command << "-define #{Shellwords.escape(string)}"
+      @command << "-define #{command_escape(string)}"
+    end
+
+    # use other options.
+    # @param [String] option option name
+    # @param [String] value option value. default = ''
+    def additional_option(option, value = '')
+      @command << "-#{command_escape(option)} #{command_escape(value)}".strip
     end
 
     # run ImageMagick.
@@ -51,7 +58,7 @@ module SimpleMagick
       file_copy(destination_path)
       command = create_command(@command, destination_path)
 
-      # ex. % mogrify -resize 90 /path/to/resized_image.jpg
+      # ex. % mogrify -resize 90 /path/to/resize_image.jpg
       begin
         puts "[INFO] #{command}" if @verbose
         stdout, stderr, status = Open3.capture3(command)
@@ -72,7 +79,7 @@ module SimpleMagick
     # @raise [SimpleMagick::ConvertError] @source_path not found.
     def file_copy(destination_path)
       unless File.file? @source_path
-        raise ConvertError.new("Not Found intput file. input file => [#{@source_path}]")
+        raise ConvertError.new("Not Found input file. input file => [#{@source_path}]")
       end
 
       dest_dir = File.dirname(destination_path)
@@ -88,6 +95,13 @@ module SimpleMagick
     def create_command(command, destination_path)
       command << Shellwords.escape(destination_path)
       command.join(' ')
+    end
+
+    # option string to CLI Escape.
+    # @return [String] escaped string
+    def command_escape(value)
+      string_value = value.to_s.strip
+      Shellwords.escape(string_value) unless string_value.empty?
     end
   end
 end
