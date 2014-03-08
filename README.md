@@ -22,7 +22,7 @@ And then execute:
 
 ## Supported versions
 
- - Ruby 2.0.0, 2.1.0
+ - Ruby 2.0.0 or later
 
 ## Usage
 
@@ -34,6 +34,13 @@ if SimpleMagick.imagemagick_installed?
   image.resize '150x150'
   image.convert! '/path/to/dest_image.jpg'
 end
+```
+
+using another option?
+
+```ruby
+  image = SimpleMagick::Image.new('/path/to/src_image.jpg')
+  image.additional_option 'type', 'Grayscale' # mogrify -type Grayscale /path/to/src_image.jpg
 ```
 
 ## Benchmark

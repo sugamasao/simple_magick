@@ -10,6 +10,22 @@ describe SimpleMagick do
   end
 
   describe SimpleMagick::Image do
+    describe '#additional_command' do
+      context 'command and value' do
+        let(:asset_path) { File.join(__dir__, 'assets', 'sample.jpg') }
+
+        it 'set option and value' do
+          image = SimpleMagick::Image.new(asset_path)
+          expect(image.additional_option('type', 'Grayscale').last).to eq '-type Grayscale'
+        end
+
+        it 'set only option' do
+          image = SimpleMagick::Image.new(asset_path)
+          expect(image.additional_option('version').last).to eq '-version'
+        end
+      end
+    end
+
     describe '#convert!' do
       let(:asset_path) { File.join(__dir__, 'assets', 'sample.jpg') }
       let(:result_path) { File.join(__dir__, 'assets', 'result', 'resize.jpg') }
