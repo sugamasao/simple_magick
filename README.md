@@ -14,7 +14,7 @@ requirements ImageMagick(use mogrify command)
 
 Add this line to your application's Gemfile:
 
-    gem 'simple_magick', github: 'sugamasao/simple_magick'
+    gem 'simple_magick'
 
 And then execute:
 
