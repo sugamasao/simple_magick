@@ -1,4 +1,5 @@
 require 'simple_magick/version'
+require 'simple_magick/image_magick'
 require 'fileutils'
 require 'open3'
 require 'shellwords'
@@ -10,7 +11,7 @@ module SimpleMagick
   # @note Windows Not Supported
   # @return [Boolean] find mogrify command is true
   def self.imagemagick_installed?
-    !`which mogrify`.split("\n").first.nil?
+    !`which #{ImageMagick::EXEC}`.split("\n").first.nil?
   end
 
   # Convert Image Class.
@@ -25,22 +26,13 @@ module SimpleMagick
     def initialize(source_path, verbose = false)
       @source_path = source_path
       @verbose     = verbose
-      @command     = ['mogrify']
+      @command     = [ImageMagick::EXEC]
     end
 
-    # @param [String] size resize size
-    def resize(size)
-      @command << "-resize #{command_escape(size)}"
-    end
-
-    # @param [String] num image quality
-    def quality(num)
-      @command << "-quality #{command_escape(num)}"
-    end
-
-    # @param [String] string define string.
-    def define(string)
-      @command << "-define #{command_escape(string)}"
+    # set option
+    def method_missing(method, *args)
+      super unless ImageMagick::OPTIONS.include? method.to_s
+      __send__(:additional_option, method.to_s, args[0])
     end
 
     # use other options.
@@ -63,11 +55,11 @@ module SimpleMagick
         puts "[INFO] #{command}" if @verbose
         stdout, stderr, status = Open3.capture3(command)
       rescue SystemCallError => e
-        raise ConvertError.new("mogrify error. exec command => [#{command}], Error Detail => [#{e.message}]")
+        raise ConvertError.new("#{ImageMagick::EXEC} error. exec command => [#{command}], Error Detail => [#{e.message}]")
       end
 
       unless status.success?
-        raise ConvertError.new("mogrify error. exec command => [#{command}], stdout => [#{stdout}], stderr => [#{stderr}]")
+        raise ConvertError.new("#{ImageMagick::EXEC} error. exec command => [#{command}], stdout => [#{stdout}], stderr => [#{stderr}]")
       end
     end
 
