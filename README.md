@@ -1,4 +1,4 @@
-# SimpleMagick
+# SimpleMagick [![Code Climate](https://codeclimate.com/github/sugamasao/simple_magick.png)](https://codeclimate.com/github/sugamasao/simple_magick)
 
 SimpleMagick is Ultra Simple ImageMagick Wrapper.
 
