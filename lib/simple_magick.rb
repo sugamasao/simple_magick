@@ -1,5 +1,6 @@
 require 'simple_magick/version'
 require 'simple_magick/image_magick'
+require 'simple_magick/utility'
 require 'fileutils'
 require 'open3'
 require 'shellwords'
@@ -11,7 +12,7 @@ module SimpleMagick
   # @note Windows Not Supported
   # @return [Boolean] find mogrify command is true
   def self.imagemagick_installed?
-    !`which #{ImageMagick::EXEC}`.split("\n").first.nil?
+    !`which #{ImageMagick::EXEC}`.split("\n").first.nil? unless Utility.windows?
   end
 
   # Convert Image Class.
@@ -47,7 +48,7 @@ module SimpleMagick
 
     # run ImageMagick.
     # @param [String] destination_path output image path
-    # @return [Void]
+    # @return [String] execute command
     # @raise [SimpleMagick::ConvertError] mogrify command fail.
     def convert!(destination_path)
       file_copy(destination_path)
@@ -64,6 +65,8 @@ module SimpleMagick
       unless status.success?
         raise ConvertError.new("#{ImageMagick::EXEC} error. exec command => [#{command}], stdout => [#{stdout}], stderr => [#{stderr}]")
       end
+
+      command
     end
 
     private
@@ -88,7 +91,11 @@ module SimpleMagick
     # @param [String] destination_path create image path
     # @return [String] command String.
     def create_command(command, destination_path)
-      command << Shellwords.escape(destination_path)
+      if Utility.windows?
+        command << destination_path
+      else
+        command << Shellwords.escape(destination_path)
+      end
       command.join(' ')
     end
   end
