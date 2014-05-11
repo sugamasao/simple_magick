@@ -1,9 +1,12 @@
 *.gem
 *.rbc
+*.DS_Store
 .bundle
 .idea
 .config
 .yardoc
+.*.un~
+.*.swp
 Gemfile.lock
 InstalledFiles
 _yardoc
