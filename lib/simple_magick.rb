@@ -1,5 +1,6 @@
 require 'simple_magick/version'
 require 'simple_magick/image_magick'
+require 'simple_magick/utility'
 require 'fileutils'
 require 'open3'
 require 'shellwords'
@@ -11,7 +12,7 @@ module SimpleMagick
   # @note Windows Not Supported
   # @return [Boolean] find mogrify command is true
   def self.imagemagick_installed?
-    !`which #{ImageMagick::EXEC}`.split("\n").first.nil?
+    !`which #{ImageMagick::EXEC}`.split("\n").first.nil? unless Utility.windows?
   end
 
   # Convert Image Class.
@@ -35,16 +36,19 @@ module SimpleMagick
       __send__(:additional_option, method.to_s, args[0])
     end
 
-    # use other options.
+    # use options.
     # @param [String] option option name
     # @param [String] value option value. default = ''
     def additional_option(option, value = '')
-      @command << "-#{command_escape(option)} #{command_escape(value)}".strip
+      value = value.strip
+      @command << %Q(-#{option}).strip
+      @command.last << %Q( "#{value}") unless value.empty?
+      @command
     end
 
     # run ImageMagick.
     # @param [String] destination_path output image path
-    # @return [Void]
+    # @return [String] execute command
     # @raise [SimpleMagick::ConvertError] mogrify command fail.
     def convert!(destination_path)
       file_copy(destination_path)
@@ -61,6 +65,8 @@ module SimpleMagick
       unless status.success?
         raise ConvertError.new("#{ImageMagick::EXEC} error. exec command => [#{command}], stdout => [#{stdout}], stderr => [#{stderr}]")
       end
+
+      command
     end
 
     private
@@ -85,15 +91,12 @@ module SimpleMagick
     # @param [String] destination_path create image path
     # @return [String] command String.
     def create_command(command, destination_path)
-      command << Shellwords.escape(destination_path)
+      if Utility.windows?
+        command << destination_path
+      else
+        command << Shellwords.escape(destination_path)
+      end
       command.join(' ')
-    end
-
-    # option string to CLI Escape.
-    # @return [String] escaped string
-    def command_escape(value)
-      string_value = value.to_s.strip
-      Shellwords.escape(string_value) unless string_value.empty?
     end
   end
 end
