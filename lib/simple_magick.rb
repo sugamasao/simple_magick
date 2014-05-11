@@ -35,11 +35,14 @@ module SimpleMagick
       __send__(:additional_option, method.to_s, args[0])
     end
 
-    # use other options.
+    # use options.
     # @param [String] option option name
     # @param [String] value option value. default = ''
     def additional_option(option, value = '')
-      @command << "-#{command_escape(option)} #{command_escape(value)}".strip
+      value = value.strip
+      @command << %Q(-#{option}).strip
+      @command.last << %Q( "#{value}") unless value.empty?
+      @command
     end
 
     # run ImageMagick.
@@ -87,13 +90,6 @@ module SimpleMagick
     def create_command(command, destination_path)
       command << Shellwords.escape(destination_path)
       command.join(' ')
-    end
-
-    # option string to CLI Escape.
-    # @return [String] escaped string
-    def command_escape(value)
-      string_value = value.to_s.strip
-      Shellwords.escape(string_value) unless string_value.empty?
     end
   end
 end
