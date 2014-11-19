@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'fileutils'
 
 describe SimpleMagick do
+  let(:current_dir) { File.expand_path('..', __FILE__) }
 
   describe '.imagemagick_installed?' do
     it 'installed ImageMagick' do
@@ -12,7 +13,7 @@ describe SimpleMagick do
   describe SimpleMagick::Image do
     describe '#additional_command' do
       context 'command and value' do
-        let(:asset_path) { File.join(__dir__, 'assets', 'sample.jpg') }
+        let(:asset_path) { File.join(current_dir, 'assets', 'sample.jpg') }
 
         it 'set option and value' do
           image = SimpleMagick::Image.new(asset_path)
@@ -27,8 +28,8 @@ describe SimpleMagick do
     end
 
     describe '#convert!' do
-      let(:asset_path) { File.join(__dir__, 'assets', 'sample.jpg') }
-      let(:result_path) { File.join(__dir__, 'assets', 'result', 'resize.jpg') }
+      let(:asset_path) { File.join(current_dir, 'assets', 'sample.jpg') }
+      let(:result_path) { File.join(current_dir, 'assets', 'result', 'resize.jpg') }
 
       before do
         result_dir = File.dirname(result_path)
@@ -59,8 +60,8 @@ describe SimpleMagick do
 
       context 'create command remove ShellEscape and quote option' do
         context '#3 draw option filed' do
-          let(:asset_path) { File.join(__dir__, 'assets', 'sample.jpg') }
-          let(:result_path) { File.join(__dir__, 'assets', 'result', 'resize.jpg') }
+          let(:asset_path) { File.join(current_dir, 'assets', 'sample.jpg') }
+          let(:result_path) { File.join(current_dir, 'assets', 'result', 'resize.jpg') }
 
           before do
             result_dir = File.dirname(result_path)
@@ -76,8 +77,8 @@ describe SimpleMagick do
         end
 
         context '#2 Windows filename type 8.1 filed(only windows)' do
-          let(:asset_path) { File.join(__dir__, 'assets', 'sample.jpg') }
-          let(:result_path) { File.join(__dir__, 'assets', 'result', 'AAA123~1.jpg') }
+          let(:asset_path) { File.join(current_dir, 'assets', 'sample.jpg') }
+          let(:result_path) { File.join(current_dir, 'assets', 'result', 'AAA123~1.jpg') }
 
           context 'Windows OS' do
             before do
