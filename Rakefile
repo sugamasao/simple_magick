@@ -23,8 +23,10 @@ module SimpleMagick
   # Generate Date #{Time.now}
   # ImageMagick Version: #{version}
   module ImageMagick
+    # Image Magick Execute Command
     EXEC = 'mogrify'
 
+    # Image Magick Allow Options
     OPTIONS = %w(
 EOS
   options.each_slice(5) do |opt|

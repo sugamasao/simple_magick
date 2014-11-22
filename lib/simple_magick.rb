@@ -5,7 +5,9 @@ require 'fileutils'
 require 'open3'
 require 'shellwords'
 
+# SimpleMagick module.
 module SimpleMagick
+  # SimpleMagick Error Class
   class ConvertError < StandardError;end
 
   # mogrify is ImageMagick family tool.
