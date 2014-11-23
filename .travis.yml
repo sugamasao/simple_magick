@@ -7,5 +7,5 @@ rvm:
 install:
   - bundle install
   - sudo apt-get install imagemagick
-script:  bundle exec rspec
+script: CODECLIMATE_REPO_TOKEN=5d8f6ebc66e0d80360cd19ec03a6d280de86b6d323edb88feaf1dd655f21a048 bundle exec rspec
 
