@@ -1,9 +1,8 @@
 # SimpleMagick
-[![Gem
-Version](https://badge.fury.io/rb/simple_magick.svg)](http://badge.fury.io/rb/simple_magick)
+[![GemVersion](https://badge.fury.io/rb/simple_magick.svg)](http://badge.fury.io/rb/simple_magick)
 [![Code Climate](https://codeclimate.com/github/sugamasao/simple_magick.png)](https://codeclimate.com/github/sugamasao/simple_magick)
+[![Test Coverage](https://codeclimate.com/github/sugamasao/simple_magick/badges/coverage.svg)](https://codeclimate.com/github/sugamasao/simple_magick)
 [![Build Status](https://travis-ci.org/sugamasao/simple_magick.svg)](https://travis-ci.org/sugamasao/simple_magick)
-
 
 SimpleMagick is Ultra Simple ImageMagick Wrapper.
 
