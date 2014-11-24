@@ -3,6 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/sugamasao/simple_magick.png)](https://codeclimate.com/github/sugamasao/simple_magick)
 [![Test Coverage](https://codeclimate.com/github/sugamasao/simple_magick/badges/coverage.svg)](https://codeclimate.com/github/sugamasao/simple_magick)
 [![Build Status](https://travis-ci.org/sugamasao/simple_magick.svg)](https://travis-ci.org/sugamasao/simple_magick)
+[![Inline docs](http://inch-ci.org/github/sugamasao/simple_magick.svg?branch=master)](http://inch-ci.org/github/sugamasao/simple_magick)
 
 SimpleMagick is Ultra Simple ImageMagick Wrapper.
 
