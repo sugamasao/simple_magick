@@ -24,18 +24,13 @@ module SimpleMagick
   #   image.convert!('/path/to/thumb.jpg')
   class Image
 
+    # initialize Image Class
     # @param [String] source_path Target Image File Path
     # @param [Boolean] verbose print detailed information
     def initialize(source_path, verbose = false)
       @source_path = source_path
       @verbose     = verbose
       @command     = [ImageMagick::EXEC]
-    end
-
-    # set option
-    def method_missing(method, *args)
-      super unless ImageMagick::OPTIONS.include? method.to_s
-      __send__(:additional_option, method.to_s, args[0])
     end
 
     # use options.
@@ -99,6 +94,12 @@ module SimpleMagick
         command << Shellwords.escape(destination_path)
       end
       command.join(' ')
+    end
+
+    # Trap ImageMagick Option
+    def method_missing(method, *args)
+      super unless ImageMagick::OPTIONS.include? method.to_s
+      __send__(:additional_option, method.to_s, args[0])
     end
   end
 end
